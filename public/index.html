@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ESP8266 Relay Control</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding: 50px;
+      }
+
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+      }
+
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: 0.4s;
+        border-radius: 34px;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: 0.4s;
+        border-radius: 50%;
+      }
+
+      input:checked + .slider {
+        background-color: #2196f3;
+      }
+
+      input:checked + .slider:before {
+        transform: translateX(26px);
+      }
+
+      h2 {
+        color: #333;
+        margin-bottom: 20px;
+      }
+
+      .controls {
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>ESP8266 Relay Control</h2>
+
+    <div class="controls">
+      <label>Relay 1 (Device 1)</label>
+      <label class="switch">
+        <input type="checkbox" id="relay1-switch" />
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="controls">
+      <label>Relay 2 (Device 2)</label>
+      <label class="switch">
+        <input type="checkbox" id="relay2-switch" />
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="controls">
+      <label>Both Relays</label>
+      <label class="switch">
+        <input type="checkbox" id="both-switch" />
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <script>
+      // Relay 1 Control
+      const relay1Switch = document.getElementById("relay1-switch");
+      relay1Switch.addEventListener("change", function () {
+        if (this.checked) {
+          fetch("/relay1/on") // Relay 1 ON
+            .then((response) => response.text())
+            .then((data) => console.log(data));
+        } else {
+          fetch("/relay1/off") // Relay 1 OFF
+            .then((response) => response.text())
+            .then((data) => console.log(data));
+        }
+      });
+
+      // Relay 2 Control
+      const relay2Switch = document.getElementById("relay2-switch");
+      relay2Switch.addEventListener("change", function () {
+        if (this.checked) {
+          fetch("/relay2/on") // Relay 2 ON
+            .then((response) => response.text())
+            .then((data) => console.log(data));
+        } else {
+          fetch("/relay2/off") // Relay 2 OFF
+            .then((response) => response.text())
+            .then((data) => console.log(data));
+        }
+      });
+
+      // Both Relays Control
+      const bothSwitch = document.getElementById("both-switch");
+      bothSwitch.addEventListener("change", function () {
+        if (this.checked) {
+          fetch("/relay/both/on") // Both Relays ON
+            .then((response) => response.text())
+            .then((data) => console.log(data));
+        } else {
+          fetch("/relay/both/off") // Both Relays OFF
+            .then((response) => response.text())
+            .then((data) => console.log(data));
+        }
+      });
+    </script>
+  </body>
+</html>
